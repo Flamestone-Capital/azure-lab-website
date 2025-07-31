@@ -27,10 +27,9 @@ const App = () => {
   ];
 
   useEffect(() => {
-    let touchStartY = 0;
-    let touchEndY = 0;
-    let touchStartTime = 0;
-    let isIntentionalSwipe = false;
+    let scrollStartY = 0;
+    let isScrolling = false;
+    let scrollTimeout = null;
 
     const handleWheel = (e) => {
       if (isScrolling) return;
@@ -45,48 +44,43 @@ const App = () => {
       }
     };
 
-    const handleTouchStart = (e) => {
-      touchStartY = e.touches[0].clientY;
-      touchStartTime = Date.now();
-      isIntentionalSwipe = false;
-    };
-
-    const handleTouchMove = (e) => {
-      // Allow normal scrolling within content areas
-      const currentY = e.touches[0].clientY;
-      const deltaY = Math.abs(touchStartY - currentY);
-      const deltaTime = Date.now() - touchStartTime;
+    const handleScroll = (e) => {
+      // Only handle scroll on touch devices
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      if (!isTouch) return;
       
-      // Much more strict conditions for intentional swipe:
-      // 1. The swipe must be very long (>200px)
-      // 2. The swipe must be very fast (within 500ms)
-      // 3. The swipe must be primarily vertical
-      if (deltaY > 200 && deltaTime < 500) {
-        isIntentionalSwipe = true;
+      const currentScrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // Clear existing timeout
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
       }
-    };
-
-    const handleTouchEnd = (e) => {
-      if (isScrolling || !isIntentionalSwipe) return;
       
-      touchEndY = e.changedTouches[0].clientY;
-      const deltaY = touchStartY - touchEndY;
-      const deltaTime = Date.now() - touchStartTime;
-      
-      // Very strict conditions for section switching on mobile:
-      // 1. Must be an intentional swipe (set in touchmove)
-      // 2. Minimum distance of 200px
-      // 3. Maximum time of 500ms (very fast swipe)
-      if (Math.abs(deltaY) > 200 && deltaTime < 500 && isIntentionalSwipe) {
-        setIsScrolling(true);
-        setTimeout(() => setIsScrolling(false), 1000);
+      // Set timeout to detect when scrolling stops
+      scrollTimeout = setTimeout(() => {
+        const finalScrollY = window.scrollY;
         
-        if (deltaY > 0 && currentSection < sections.length - 1) {
-          setCurrentSection(prev => prev + 1);
-        } else if (deltaY < 0 && currentSection > 0) {
-          setCurrentSection(prev => prev - 1);
+        // Check if user has scrolled to the very bottom
+        if (finalScrollY + windowHeight >= documentHeight - 10) {
+          // At bottom, allow scroll down to next section
+          if (currentSection < sections.length - 1 && !isScrolling) {
+            setIsScrolling(true);
+            setCurrentSection(prev => prev + 1);
+            setTimeout(() => setIsScrolling(false), 1000);
+          }
         }
-      }
+        // Check if user has scrolled to the very top
+        else if (finalScrollY <= 10) {
+          // At top, allow scroll up to previous section
+          if (currentSection > 0 && !isScrolling) {
+            setIsScrolling(true);
+            setCurrentSection(prev => prev - 1);
+            setTimeout(() => setIsScrolling(false), 1000);
+          }
+        }
+      }, 150); // Wait 150ms after scroll stops
     };
 
     // Only add wheel event for desktop (non-touch devices)
@@ -94,17 +88,17 @@ const App = () => {
     
     if (!isTouch) {
       window.addEventListener('wheel', handleWheel, { passive: false });
+    } else {
+      // For touch devices, use scroll detection instead of touch events
+      window.addEventListener('scroll', handleScroll, { passive: true });
     }
-    
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchmove', handleTouchMove, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
     
     return () => {
       window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove', handleTouchMove);
-      window.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
     };
   }, [currentSection, isScrolling, sections.length]);
 
@@ -411,8 +405,10 @@ const ServicesSection = ({ scrollToSection }) => {
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 to-blue-900/90"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="container mx-auto px-6 py-8 sm:py-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center min-h-[calc(100vh-8rem)]">
+          {/* Mobile spacing adjustment */}
+          <div className="block sm:hidden h-8"></div>
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -713,8 +709,10 @@ const ContactSection = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-green-900"></div>
       
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="container mx-auto px-6 py-8 sm:py-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center min-h-[calc(100vh-8rem)]">
+          {/* Mobile spacing adjustment */}
+          <div className="block sm:hidden h-8"></div>
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
