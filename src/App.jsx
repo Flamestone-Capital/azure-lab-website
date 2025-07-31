@@ -29,6 +29,8 @@ const App = () => {
   useEffect(() => {
     let touchStartY = 0;
     let touchEndY = 0;
+    let touchStartTime = 0;
+    let isIntentionalSwipe = false;
 
     const handleWheel = (e) => {
       if (isScrolling) return;
@@ -45,15 +47,37 @@ const App = () => {
 
     const handleTouchStart = (e) => {
       touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+      isIntentionalSwipe = false;
+    };
+
+    const handleTouchMove = (e) => {
+      // Allow normal scrolling within content areas
+      const currentY = e.touches[0].clientY;
+      const deltaY = Math.abs(touchStartY - currentY);
+      const deltaTime = Date.now() - touchStartTime;
+      
+      // Only consider it an intentional swipe if:
+      // 1. The swipe is long enough (>150px)
+      // 2. The swipe is fast enough (within 800ms)
+      // 3. The swipe is primarily vertical
+      if (deltaY > 150 && deltaTime < 800) {
+        isIntentionalSwipe = true;
+      }
     };
 
     const handleTouchEnd = (e) => {
-      if (isScrolling) return;
+      if (isScrolling || !isIntentionalSwipe) return;
       
       touchEndY = e.changedTouches[0].clientY;
       const deltaY = touchStartY - touchEndY;
+      const deltaTime = Date.now() - touchStartTime;
       
-      if (Math.abs(deltaY) > 50) { // Minimum swipe distance
+      // More strict conditions for section switching on mobile:
+      // 1. Must be an intentional swipe (set in touchmove)
+      // 2. Minimum distance of 150px
+      // 3. Maximum time of 800ms (fast swipe)
+      if (Math.abs(deltaY) > 150 && deltaTime < 800 && isIntentionalSwipe) {
         setIsScrolling(true);
         setTimeout(() => setIsScrolling(false), 1000);
         
@@ -65,13 +89,21 @@ const App = () => {
       }
     };
 
-    window.addEventListener('wheel', handleWheel, { passive: false });
+    // Only add wheel event for desktop (non-touch devices)
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (!isTouch) {
+      window.addEventListener('wheel', handleWheel, { passive: false });
+    }
+    
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchmove', handleTouchMove, { passive: true });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
     
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
     };
   }, [currentSection, isScrolling, sections.length]);
@@ -454,15 +486,15 @@ const ServicesSection = ({ scrollToSection }) => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-6 hover:border-green-400/50 transition-all duration-300 group"
+                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-3 sm:p-6 hover:border-green-400/50 transition-all duration-300 group"
               >
-                <div className="flex items-start space-x-4">
-                  <div className={`bg-gradient-to-r ${service.color} rounded-lg p-3 group-hover:scale-110 transition-transform duration-300`}>
+                <div className="flex items-start space-x-2 sm:space-x-4">
+                  <div className={`bg-gradient-to-r ${service.color} rounded-lg p-2 sm:p-3 group-hover:scale-110 transition-transform duration-300`}>
                     {service.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-white mb-2">{service.title}</h3>
-                    <p className="text-gray-300">{service.description}</p>
+                    <h3 className="text-lg sm:text-xl font-semibold text-white mb-1 sm:mb-2">{service.title}</h3>
+                    <p className="text-sm sm:text-base text-gray-300">{service.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -535,7 +567,7 @@ const PortfolioSection = () => {
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           {projects.map((project, index) => (
             <motion.div
               key={index}
@@ -545,7 +577,7 @@ const PortfolioSection = () => {
               className="group relative overflow-hidden rounded-2xl cursor-pointer"
               onClick={() => setSelectedVideo(project)}
             >
-              <div className="relative h-96">
+              <div className="relative h-64 sm:h-80 md:h-96">
                 {/* Background image */}
                 <img
                   src={project.image}
@@ -569,14 +601,14 @@ const PortfolioSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
               </div>
               
-              <div className="absolute bottom-6 left-6 right-6">
-                <div className="mb-2">
-                  <span className="text-sm text-gray-300 bg-black/50 px-3 py-1 rounded-full">
+              <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6">
+                <div className="mb-1 sm:mb-2">
+                  <span className="text-xs sm:text-sm text-gray-300 bg-black/50 px-2 sm:px-3 py-1 rounded-full">
                     {project.category}
                   </span>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-1">{project.title}</h3>
-                <p className="text-gray-200">{project.subtitle}</p>
+                <h3 className="text-lg sm:text-2xl font-bold text-white mb-1">{project.title}</h3>
+                <p className="text-sm sm:text-base text-gray-200">{project.subtitle}</p>
               </div>
             </motion.div>
           ))}
@@ -811,7 +843,7 @@ const ContactSection = () => {
           className="text-center mt-16 pt-8 border-t border-gray-700"
         >
           <p className="text-gray-400">
-            © 2025 Azure Lab Limited. 版權所有。
+            2025 Azure Lab Limited. 版權所有。
           </p>
         </motion.div>
       </div>
@@ -820,4 +852,3 @@ const ContactSection = () => {
 };
 
 export default App;
-
