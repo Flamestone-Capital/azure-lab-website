@@ -57,11 +57,11 @@ const App = () => {
       const deltaY = Math.abs(touchStartY - currentY);
       const deltaTime = Date.now() - touchStartTime;
       
-      // Only consider it an intentional swipe if:
-      // 1. The swipe is long enough (>150px)
-      // 2. The swipe is fast enough (within 800ms)
-      // 3. The swipe is primarily vertical
-      if (deltaY > 150 && deltaTime < 800) {
+      // Much more strict conditions for intentional swipe:
+      // 1. The swipe must be very long (>200px)
+      // 2. The swipe must be very fast (within 500ms)
+      // 3. The swipe must be primarily vertical
+      if (deltaY > 200 && deltaTime < 500) {
         isIntentionalSwipe = true;
       }
     };
@@ -73,11 +73,11 @@ const App = () => {
       const deltaY = touchStartY - touchEndY;
       const deltaTime = Date.now() - touchStartTime;
       
-      // More strict conditions for section switching on mobile:
+      // Very strict conditions for section switching on mobile:
       // 1. Must be an intentional swipe (set in touchmove)
-      // 2. Minimum distance of 150px
-      // 3. Maximum time of 800ms (fast swipe)
-      if (Math.abs(deltaY) > 150 && deltaTime < 800 && isIntentionalSwipe) {
+      // 2. Minimum distance of 200px
+      // 3. Maximum time of 500ms (very fast swipe)
+      if (Math.abs(deltaY) > 200 && deltaTime < 500 && isIntentionalSwipe) {
         setIsScrolling(true);
         setTimeout(() => setIsScrolling(false), 1000);
         
@@ -380,19 +380,19 @@ const AboutSection = ({ scrollToSection }) => {
 const ServicesSection = ({ scrollToSection }) => {
   const services = [
     {
-      icon: <Gamepad2 className="w-12 h-12" />,
+      icon: <Gamepad2 className="w-4 h-4 sm:w-12 sm:h-12" />,
       title: "虛擬世界构建",
       description: "打造沉浸式的數位生態系統，讓玩家在虛擬空間中自由創造與探索。",
       color: "from-green-400 to-teal-400"
     },
     {
-      icon: <Zap className="w-12 h-12" />,
+      icon: <Zap className="w-4 h-4 sm:w-12 sm:h-12" />,
       title: "AI 智能技術",
       description: "運用人工智能與機器學習，創建更智能、更真實的遊戲體驗。",
       color: "from-blue-400 to-purple-400"
     },
     {
-      icon: <Users className="w-12 h-12" />,
+      icon: <Users className="w-4 h-4 sm:w-12 sm:h-12" />,
       title: "跨平台連接",
       description: "實現無縫的跨平台體驗，讓玩家在任何設備上都能連接到同一個虛擬世界。",
       color: "from-orange-400 to-red-400"
@@ -418,47 +418,47 @@ const ServicesSection = ({ scrollToSection }) => {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="space-y-4 sm:space-y-8"
           >
             <div>
-              <h2 className="text-6xl font-bold tracking-wider mb-6">
+              <h2 className="text-3xl sm:text-6xl font-bold tracking-wider mb-3 sm:mb-6">
                 <span className="block text-white">核心</span>
                 <span className="block text-white">技術</span>
                 <span className="block bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
                   領域
                 </span>
               </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-blue-400 mb-6"></div>
+              <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-green-400 to-blue-400 mb-3 sm:mb-6"></div>
             </div>
 
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-lg flex items-center justify-center">
-                  <Play className="w-6 h-6 text-black" />
+            <div className="space-y-3 sm:space-y-6">
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-lg flex items-center justify-center">
+                  <Play className="w-4 h-4 sm:w-6 sm:h-6 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">次世代體驗</h3>
-                  <p className="text-gray-300">運用最先進的遊戲引擎與AI技術，打造超越想像的沉浸式遊戲世界，重新定義玩家與虛擬環境的互動方式。</p>
+                  <h3 className="text-sm sm:text-xl font-semibold text-white">次世代體驗</h3>
+                  <p className="text-xs sm:text-base text-gray-300 leading-tight">運用最先進的遊戲引擎與AI技術，打造超越想像的沉浸式遊戲世界。</p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
-                  <Zap className="w-6 h-6 text-black" />
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg flex items-center justify-center">
+                  <Zap className="w-4 h-4 sm:w-6 sm:h-6 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">創新研發</h3>
-                  <p className="text-gray-300">從概念設計到市場發布，我們的跨領域專家團隊提供完整的遊戲開發解決方案，確保每個項目都能達到業界頂尖水準。</p>
+                  <h3 className="text-sm sm:text-xl font-semibold text-white">創新研發</h3>
+                  <p className="text-xs sm:text-base text-gray-300 leading-tight">從概念設計到市場發布，提供完整的遊戲開發解決方案。</p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-400 rounded-lg flex items-center justify-center">
-                  <Users className="w-6 h-6 text-black" />
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r from-orange-400 to-red-400 rounded-lg flex items-center justify-center">
+                  <Users className="w-4 h-4 sm:w-6 sm:h-6 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-white">全球社群</h3>
-                  <p className="text-gray-300">建立跨平台的遊戲生態系統，連結全球玩家社群，創造持續互動與共同成長的遊戲環境。</p>
+                  <h3 className="text-sm sm:text-xl font-semibold text-white">全球社群</h3>
+                  <p className="text-xs sm:text-base text-gray-300 leading-tight">建立跨平台的遊戲生態系統，連結全球玩家社群。</p>
                 </div>
               </div>
             </div>
@@ -467,7 +467,7 @@ const ServicesSection = ({ scrollToSection }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => scrollToSection(4)}
-              className="bg-gradient-to-r from-green-400 to-blue-500 text-black px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg hover:shadow-green-400/25 transition-all duration-300"
+              className="bg-gradient-to-r from-green-400 to-blue-500 text-black px-4 py-2 sm:px-8 sm:py-4 rounded-lg font-semibold text-sm sm:text-lg hover:shadow-lg hover:shadow-green-400/25 transition-all duration-300"
             >
               聯絡我們
             </motion.button>
@@ -478,7 +478,7 @@ const ServicesSection = ({ scrollToSection }) => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6"
+            className="space-y-2 sm:space-y-6"
           >
             {services.map((service, index) => (
               <motion.div
@@ -486,15 +486,15 @@ const ServicesSection = ({ scrollToSection }) => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-3 sm:p-6 hover:border-green-400/50 transition-all duration-300 group"
+                className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl sm:rounded-2xl p-2 sm:p-6 hover:border-green-400/50 transition-all duration-300 group"
               >
                 <div className="flex items-start space-x-2 sm:space-x-4">
-                  <div className={`bg-gradient-to-r ${service.color} rounded-lg p-2 sm:p-3 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`bg-gradient-to-r ${service.color} rounded-md sm:rounded-lg p-1.5 sm:p-3 group-hover:scale-110 transition-transform duration-300`}>
                     {service.icon}
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg sm:text-xl font-semibold text-white mb-1 sm:mb-2">{service.title}</h3>
-                    <p className="text-sm sm:text-base text-gray-300">{service.description}</p>
+                    <h3 className="text-sm sm:text-xl font-semibold text-white mb-0.5 sm:mb-2">{service.title}</h3>
+                    <p className="text-xs sm:text-base text-gray-300 leading-tight">{service.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -553,16 +553,16 @@ const PortfolioSection = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-6 sm:mb-16"
         >
-          <h2 className="text-6xl font-bold tracking-wider mb-6">
+          <h2 className="text-3xl sm:text-6xl font-bold tracking-wider mb-3 sm:mb-6">
             <span className="block text-white">前沿</span>
             <span className="block bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
               項目展示
             </span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            探索 Azure Lab 的最新成果，這些項目展示了我們在虛擬世界技術與沉浸式體驗方面的突破性進展。每個項目都是我們對未來遊戲願景的具體實現。
+          <p className="text-sm sm:text-xl text-gray-300 max-w-3xl mx-auto leading-tight">
+            探索 Azure Lab 的最新成果，展示虛擬世界技術與沉浸式體驗的突破性進展。
           </p>
         </motion.div>
 
@@ -577,7 +577,7 @@ const PortfolioSection = () => {
               className="group relative overflow-hidden rounded-2xl cursor-pointer"
               onClick={() => setSelectedVideo(project)}
             >
-              <div className="relative h-64 sm:h-80 md:h-96">
+              <div className="relative h-48 sm:h-64 md:h-80 lg:h-96">
                 {/* Background image */}
                 <img
                   src={project.image}
