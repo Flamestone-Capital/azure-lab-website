@@ -312,19 +312,22 @@ const AboutSection = ({ scrollToSection }) => {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gray-900">
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-6 py-12 sm:py-16 relative z-10">
+        {/* Mobile spacing adjustment */}
+        <div className="block sm:hidden h-8"></div>
+        
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-16"
         >
-          <h2 className="text-6xl font-bold tracking-wider mb-6">
+          <h2 className="text-3xl sm:text-6xl font-bold tracking-wider mb-4 sm:mb-6">
             <span className="block text-white">重新定義</span>
             <span className="block bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">虛擬世界</span>
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">
+          <p className="text-sm sm:text-xl text-gray-300 max-w-3xl mx-auto mb-6 sm:mb-8 px-4">
             我們相信未來的遊戲不僅僅是娛樂，而是人類體驗的延伸。Azure Lab 致力於打造沉浸式的虛擬世界，讓玩家能在數位空間中創造、探索和連結。我們的願景是創建一個無縫的數位生態系統，讓現實與虛擬之間的界線逐漸消失。
           </p>
           
@@ -332,23 +335,23 @@ const AboutSection = ({ scrollToSection }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => scrollToSection(4)}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
           >
             加入我們
           </motion.button>
         </motion.div>
 
         {/* Team Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
           {teamMembers.map((member, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="group relative overflow-hidden rounded-2xl"
+              className="group relative overflow-hidden rounded-xl sm:rounded-2xl"
             >
-              <div className="relative h-80">
+              <div className="relative h-40 sm:h-80">
                 <img
                   src={member.image}
                   alt={member.title}
@@ -358,9 +361,9 @@ const AboutSection = ({ scrollToSection }) => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
               </div>
               
-              <div className="absolute bottom-6 left-6 right-6">
-                <h3 className="text-2xl font-bold text-white mb-2">{member.title}</h3>
-                <p className="text-gray-200">{member.subtitle}</p>
+              <div className="absolute bottom-3 left-3 right-3 sm:bottom-6 sm:left-6 sm:right-6">
+                <h3 className="text-sm sm:text-2xl font-bold text-white mb-1 sm:mb-2">{member.title}</h3>
+                <p className="text-xs sm:text-base text-gray-200">{member.subtitle}</p>
               </div>
             </motion.div>
           ))}
@@ -405,7 +408,7 @@ const ServicesSection = ({ scrollToSection }) => {
         <div className="absolute inset-0 bg-gradient-to-br from-gray-900/90 to-blue-900/90"></div>
       </div>
 
-      <div className="container mx-auto px-6 py-8 sm:py-16 relative z-10">
+      <div className="container mx-auto px-6 py-16 sm:py-16 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center min-h-[calc(100vh-8rem)]">
           {/* Mobile spacing adjustment */}
           <div className="block sm:hidden h-8"></div>
@@ -709,48 +712,49 @@ const ContactSection = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900 to-green-900"></div>
       
-      <div className="container mx-auto px-6 py-8 sm:py-16 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16 items-center min-h-[calc(100vh-8rem)]">
+      <div className="container mx-auto px-6 py-12 sm:py-16 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-16 items-start min-h-[calc(100vh-8rem)]">
           {/* Mobile spacing adjustment */}
           <div className="block sm:hidden h-8"></div>
+          
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-8"
+            className="space-y-4 sm:space-y-8"
           >
             <div>
-              <h2 className="text-6xl font-bold tracking-wider mb-6">
+              <h2 className="text-3xl sm:text-6xl font-bold tracking-wider mb-3 sm:mb-6">
                 <span className="block text-white">加入</span>
                 <span className="block bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
                   未來
                 </span>
               </h2>
-              <div className="w-32 h-1.5 bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 mb-6 rounded-full"></div>
-              <p className="text-xl text-gray-200 leading-relaxed">
+              <div className="w-20 h-1 sm:w-32 sm:h-1.5 bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 mb-4 sm:mb-6 rounded-full"></div>
+              <p className="text-sm sm:text-xl text-gray-200 leading-relaxed px-2 sm:px-0">
                 準備好與 Azure Lab 一同創建下一代虛擬世界嗎？我們正在尋找具有創新精神的人才，共同打造改變世界的數位體驗。讓我們一起重新定義數位未來。
               </p>
             </div>
 
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-lg flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-black" />
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-3 sm:gap-6">
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-lg flex items-center justify-center">
+                  <Mail className="w-4 h-4 sm:w-6 sm:h-6 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">電子郵件</h3>
-                  <p className="text-gray-300">info@azurelab-hk.com</p>
+                  <h3 className="text-sm sm:text-lg font-semibold text-white">電子郵件</h3>
+                  <p className="text-xs sm:text-base text-gray-300">info@azurelab-hk.com</p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-400 rounded-lg flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-black" />
+              <div className="flex items-center space-x-3 sm:space-x-4">
+                <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-r from-orange-400 to-red-400 rounded-lg flex items-center justify-center">
+                  <MapPin className="w-4 h-4 sm:w-6 sm:h-6 text-black" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">地址</h3>
-                  <p className="text-gray-300">Unit 1010, Silvercord, Tower 1, 30 Canton Road, Hong Kong</p>
+                  <h3 className="text-sm sm:text-lg font-semibold text-white">地址</h3>
+                  <p className="text-xs sm:text-base text-gray-300">Unit 1010, Silvercord, Tower 1, 30 Canton Road, Hong Kong</p>
                 </div>
               </div>
             </div>
@@ -761,44 +765,44 @@ const ContactSection = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-2xl p-8"
+            className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl sm:rounded-2xl p-4 sm:p-8"
           >
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-white text-sm font-medium mb-2">姓名</label>
+                <label className="block text-white text-xs sm:text-sm font-medium mb-1 sm:mb-2">姓名</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none transition-colors duration-300"
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:border-green-400 focus:outline-none transition-colors duration-300"
                   placeholder="請輸入您的姓名"
                 />
               </div>
               
               <div>
-                <label className="block text-white text-sm font-medium mb-2">電子郵件</label>
+                <label className="block text-white text-xs sm:text-sm font-medium mb-1 sm:mb-2">電子郵件</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none transition-colors duration-300"
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:border-green-400 focus:outline-none transition-colors duration-300"
                   placeholder="請輸入您的電子郵件"
                 />
               </div>
               
               <div>
-                <label className="block text-white text-sm font-medium mb-2">訊息</label>
+                <label className="block text-white text-xs sm:text-sm font-medium mb-1 sm:mb-2">訊息</label>
                 <textarea
-                  rows={4}
+                  rows={3}
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
                   required
-                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:border-green-400 focus:outline-none transition-colors duration-300 resize-none"
+                  className="w-full bg-gray-700/50 border border-gray-600 rounded-lg px-3 py-2 sm:px-4 sm:py-3 text-sm sm:text-base text-white placeholder-gray-400 focus:border-green-400 focus:outline-none transition-colors duration-300 resize-none"
                   placeholder="請輸入您的訊息"
                 ></textarea>
               </div>
@@ -821,7 +825,7 @@ const ContactSection = () => {
                 whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-300 ${
+                className={`w-full px-4 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-sm sm:text-lg transition-all duration-300 ${
                   isSubmitting 
                     ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                     : 'bg-gradient-to-r from-green-400 to-blue-500 text-black hover:shadow-lg hover:shadow-green-400/25'
@@ -838,9 +842,9 @@ const ContactSection = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-center mt-16 pt-8 border-t border-gray-700"
+          className="text-center mt-8 sm:mt-16 pt-4 sm:pt-8 border-t border-gray-700"
         >
-          <p className="text-gray-400">
+          <p className="text-xs sm:text-base text-gray-400">
             2025 Azure Lab Limited. 版權所有。
           </p>
         </motion.div>
