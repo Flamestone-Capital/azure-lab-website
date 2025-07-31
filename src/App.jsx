@@ -5,10 +5,10 @@ import './App.css';
 
 // Import images
 import gamerHero from './assets/ai-gamer-hero.jpg';
-import gamerTeam1 from './assets/ai-gamer-team1.jpg';
-import gamerTeam2 from './assets/ai-gamer-team2.jpg';
+import gamerTeam1 from './assets/gamer-team1.jpg';
+import gamerTeam2 from './assets/team-member-4.jpg';
 import cyberpunkBg from './assets/ai-cyberpunk-bg.jpg';
-import techBg from './assets/ai-tech-bg.jpg';
+import techBg from './assets/tech-bg.jpg';
 import azureMascot from './assets/azure-mascot-hero.png';
 import azureMascotTransparent from './assets/azure-mascot-transparent.png';
 import azureMascotFinal from './assets/azure-mascot-final.png';
